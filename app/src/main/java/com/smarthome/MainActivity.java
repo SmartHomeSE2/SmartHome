@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 
-public class MainActivity extends AppCompatActivity implements ManageItemsFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements DashboardFragment.OnFragmentInteractionListener, ManageItemsFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "DashboardActivity";
 
@@ -28,9 +28,12 @@ public class MainActivity extends AppCompatActivity implements ManageItemsFragme
     }
 
     @Override
-    public void onFragmentInteraction(String title) {
+    public void onFragmentInteraction(String title,int icon) {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(icon);
         }
     }
 }

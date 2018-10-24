@@ -4,10 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,9 +34,9 @@ public class ManageItemsFragment extends Fragment {
         //Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_manage_items, container, false);
 
-        //Set title
+        //Set title and icon
         if (mListener != null) {
-            mListener.onFragmentInteraction("MANAGE ITEMS");
+            mListener.onFragmentInteraction("MANAGE ITEMS", R.drawable.ic_keyboard_arrow_left_black_24dp);
         }
         setHasOptionsMenu(true);
 
@@ -47,11 +49,29 @@ public class ManageItemsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         Log.i(TAG, "layout manager");
 
-
         //Return the view
         return rootView;
     }
 
+    ///////////////////////////////////// Menu handling ////////////////////////////////////////////
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Log.i(TAG, "home button pressed");
+                if (getActivity() != null) {
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    if (fm.getBackStackEntryCount() > 0) {
+                        fm.popBackStack();
+                    }
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    ////////////////////////////////// Toolbar handling ////////////////////////////////////////////
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -70,6 +90,6 @@ public class ManageItemsFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(String title);
+        void onFragmentInteraction(String title, int icon);
     }
 }
