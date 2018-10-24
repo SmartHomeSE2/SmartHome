@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -36,18 +37,25 @@ public class ManageItemsFragment extends Fragment {
 
         //Set title and icon
         if (mListener != null) {
-            mListener.onFragmentInteraction("MANAGE ITEMS", R.drawable.ic_keyboard_arrow_left_black_24dp);
+            mListener.onFragmentInteraction("Manage Items", R.drawable.ic_keyboard_arrow_left_black_24dp);
         }
         setHasOptionsMenu(true);
 
         //Setup RecyclerView
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView_manage_items);
         Log.i(TAG, "recyclerview found");
-        recyclerView.setAdapter(new ManageItemsAdapter());
+
+        ManageItemsAdapter adapter = new ManageItemsAdapter();
+        recyclerView.setAdapter(adapter);
         Log.i(TAG, "adapter");
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
         Log.i(TAG, "layout manager");
+
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
+        itemDecoration.setDrawable(getResources().getDrawable(R.drawable.recyclerview_divider));
+        recyclerView.addItemDecoration(itemDecoration);
 
         //Return the view
         return rootView;

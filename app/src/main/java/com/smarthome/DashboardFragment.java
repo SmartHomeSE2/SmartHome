@@ -39,7 +39,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
 
         //Set title and icon
         if (mListener != null) {
-            mListener.onFragmentInteraction("DASHBOARD", R.drawable.ic_home_black_24dp);
+            mListener.onFragmentInteraction("Smart Home", R.drawable.ic_home_black_24dp);
         }
         setHasOptionsMenu(true);
 
