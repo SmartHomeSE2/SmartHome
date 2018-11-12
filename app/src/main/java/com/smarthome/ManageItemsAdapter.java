@@ -5,11 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 public class ManageItemsAdapter extends RecyclerView.Adapter<ManageItemsAdapter.MyViewHolder> {
+
+    private OnItemClickListener mItemClickListener;
+
     @NonNull
     @Override
     public ManageItemsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -23,15 +27,41 @@ public class ManageItemsAdapter extends RecyclerView.Adapter<ManageItemsAdapter.
 
     @Override
     public int getItemCount() {
-        return 15;
+        return 10;
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ImageView image_item = itemView.findViewById(R.id.icon_item);
-            TextView text_item = itemView.findViewById(R.id.text_item);
+            TextView name_item = itemView.findViewById(R.id.name_item);
             Switch switch_item = itemView.findViewById(R.id.switch_item);
+            switch_item.setOnClickListener(this);
+            /*switch_item.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked){
+                        // Add view
+                    }else {
+                        // Remove view
+                    }
+                }
+            });*/
         }
+
+        @Override
+        public void onClick(View v) {
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClick(v, getAdapterPosition());
+            }
+        }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public void SetOnItemClickListner(final OnItemClickListener mItemClickListener) {
+        this.mItemClickListener = mItemClickListener;
     }
 }
