@@ -45,7 +45,18 @@ public class ManageItemsFragment extends Fragment {
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView_manage_items);
         Log.i(TAG, "recyclerview found");
 
-        ManageItemsAdapter adapter = new ManageItemsAdapter();
+        final ManageItemsAdapter adapter = new ManageItemsAdapter();
+        adapter.setOnItemClickListener(new ManageItemsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, boolean isChecked, int position) {
+                Log.i(TAG, String.valueOf(position) + "isChecked: " + isChecked);
+                if (isChecked) {
+                    // Add view
+                } else {
+                    // Remove view
+                }
+            }
+        });
         recyclerView.setAdapter(adapter);
         Log.i(TAG, "adapter");
 

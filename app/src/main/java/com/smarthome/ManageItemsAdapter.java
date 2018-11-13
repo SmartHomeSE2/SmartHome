@@ -30,38 +30,29 @@ public class ManageItemsAdapter extends RecyclerView.Adapter<ManageItemsAdapter.
         return 10;
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class MyViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
             ImageView image_item = itemView.findViewById(R.id.icon_item);
             TextView name_item = itemView.findViewById(R.id.name_item);
             Switch switch_item = itemView.findViewById(R.id.switch_item);
-            switch_item.setOnClickListener(this);
-            /*switch_item.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked){
-                        // Add view
-                    }else {
-                        // Remove view
-                    }
-                }
-            });*/
+            switch_item.setOnCheckedChangeListener(this);
         }
 
         @Override
-        public void onClick(View v) {
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             if (mItemClickListener != null) {
-                mItemClickListener.onItemClick(v, getAdapterPosition());
+                mItemClickListener.onItemClick(buttonView, isChecked, getAdapterPosition());
             }
         }
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, boolean isChecked, int position);
+
     }
 
-    public void SetOnItemClickListner(final OnItemClickListener mItemClickListener) {
+    void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
 }
