@@ -29,7 +29,7 @@
         android:drawableTint="@android:color/darker_gray"
         android:ems="10"
         android:fontFamily="sans-serif"
-        android:hint="Username or Email"
+        android:hint="Email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
