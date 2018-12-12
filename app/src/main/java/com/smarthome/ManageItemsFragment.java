@@ -1,13 +1,16 @@
 package com.smarthome;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -21,6 +24,12 @@ import android.view.ViewGroup;
 public class ManageItemsFragment extends Fragment {
     private static final String TAG = "ManageItemsFragment";
 
+    private int[] device_images = {R.drawable.ic_lightbulb_outline_black_24dp, R.drawable.ic_lightbulb_outline_black_24dp, R.drawable.ic_lightbulb_outline_black_24dp,
+            R.drawable.ic_lightbulb_outline_black_24dp, R.drawable.ic_lightbulb_outline_black_24dp, R.drawable.ic_lightbulb_outline_black_24dp, R.drawable.ic_lightbulb_outline_black_24dp,
+            R.drawable.ic_lightbulb_outline_black_24dp, R.drawable.ic_lightbulb_outline_black_24dp, R.drawable.ic_lightbulb_outline_black_24dp, R.drawable.ic_lightbulb_outline_black_24dp,
+            R.drawable.ic_lightbulb_outline_black_24dp, R.drawable.ic_lightbulb_outline_black_24dp, R.drawable.ic_lightbulb_outline_black_24dp,};
+    private String[] device_names = {"Fire alarm", "Burglar alarm", "Leakage alarm", "Temperature room", "Temperature attic", "Outside light", "Stove", "Window", "Power consumption", "Inside light", "Target room temp", "Target attic temp", "Fan"};
+
     private OnFragmentInteractionListener mListener;
 
     public ManageItemsFragment() {
@@ -28,7 +37,7 @@ public class ManageItemsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
         Log.i(TAG, "Device list onCreate");
@@ -45,11 +54,13 @@ public class ManageItemsFragment extends Fragment {
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView_manage_items);
         Log.i(TAG, "recyclerview found");
 
-        final ManageItemsAdapter adapter = new ManageItemsAdapter();
+        final ManageItemsAdapter adapter = new ManageItemsAdapter(device_names, device_images);
         adapter.setOnItemClickListener(new ManageItemsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, boolean isChecked, int position) {
-                Log.i(TAG, String.valueOf(position) + "isChecked: " + isChecked);
+                Log.i(TAG, device_names[position] + " isChecked: " + isChecked);
+
+                //Todo a custom ViewGroup that implements a simple FrameLayout along with the ability to control children
                 if (isChecked) {
                     // Add view
                 } else {
@@ -65,7 +76,10 @@ public class ManageItemsFragment extends Fragment {
         Log.i(TAG, "layout manager");
 
         DividerItemDecoration itemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
-        itemDecoration.setDrawable(getResources().getDrawable(R.drawable.recyclerview_divider));
+        Drawable divider = ResourcesCompat.getDrawable(getResources(), R.drawable.recyclerview_divider, null);
+        if (divider != null) {
+            itemDecoration.setDrawable(divider);
+        }
         recyclerView.addItemDecoration(itemDecoration);
 
         //Return the view
