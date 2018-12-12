@@ -32,7 +32,6 @@ public class ManageItemsAdapter extends RecyclerView.Adapter<ManageItemsAdapter.
     public void onBindViewHolder(@NonNull ManageItemsAdapter.MyViewHolder myViewHolder, int i) {
         myViewHolder.image_item.setImageResource(mDeviceImages[i]);
         myViewHolder.name_item.setText(mDeviceNames[i]);
-
     }
 
     @Override
