@@ -55,9 +55,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             if (StringUtils.isNoneBlank(email, password)) {
                 MyAsync myAsync = new MyAsync();
-                //myAsync.execute("registerUser");
+                myAsync.execute("loginUser");
                 //myAsync.execute("checkDevice");
-                myAsync.execute("toggleDevice");
+                //myAsync.execute("toggleDevice");
+                //myAsync.execute("setTemp");
+                //myAsync.execute("registerUser");
             }
         }
     }

@@ -74,15 +74,23 @@ public class MyAsync extends AsyncTask<String, Void, Integer> {
             JSONObject cred = new JSONObject();
             try {
                 //loginUser
-                /*cred.put("email", "something@something.com");
-                cred.put("password", "hej");*/
+                cred.put("email", "something@something.com");
+                cred.put("password", "hej");
 
                 //checkDevice
                 //cred.put("id","109");
 
                 //toggleDevice
-                cred.put("id","109");
-                cred.put("value","0");
+                /*cred.put("id","109");
+                cred.put("value","0");*/
+
+                //setTemp: Device issue
+               /* cred.put("id" ,"110");
+                cred.put("value","30");*/
+
+               //registerUser: Database issue
+                /*cred.put("email","mobile@mobile.com");
+                cred.put("password","hi");*/
             } catch (JSONException e) {
                 e.printStackTrace();
             }
