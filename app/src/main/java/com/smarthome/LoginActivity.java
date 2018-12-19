@@ -54,13 +54,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String password = edit_password_login.getText().toString();
 
             if (StringUtils.isNoneBlank(email, password)) {
-                MyAsync myAsync = new MyAsync();
-                myAsync.execute("loginUser");
-                //myAsync.execute("checkDevice");
-                //myAsync.execute("toggleDevice");
-                //myAsync.execute("setTemp");
-                //myAsync.execute("registerUser");
+                login(email, password);
             }
+
+            //myAsync.execute("checkDevice");
+            //myAsync.execute("toggleDevice");
+            //myAsync.execute("setTemp"); wait for Device's team to tackle it
+            //myAsync.execute("registerUser");
         }
+    }
+
+    private void login(String email, String password) {
+        boolean isSuccessful = false;
+
+        NetRequest request = new NetRequest();
+        request.execute("loginUser",email,password);
     }
 }

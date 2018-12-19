@@ -1,6 +1,5 @@
 package com.smarthome;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -19,17 +18,11 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class MyAsync extends AsyncTask<String, Void, Integer> {
+public class NetRequest extends AsyncTask<String, Void, Integer> {
 
-    private Context mContext;
+    private static final String TAG = NetRequest.class.getSimpleName();
 
-    private static final String TAG = MyAsync.class.getSimpleName();
-
-    public MyAsync() {
-    }
-
-    public MyAsync(Context context) {
-        //mContext = context;
+    public NetRequest() {
     }
 
     //Execute this before the request is made
@@ -50,27 +43,19 @@ public class MyAsync extends AsyncTask<String, Void, Integer> {
             URL url = new URL(urlPrefix + query);
             urlConnection = (HttpURLConnection) url.openConnection();
             Log.i(TAG, "urlConnection: " + urlConnection.toString());
-            //urlConnection.setDoInput(true); //by default
-            urlConnection.setDoOutput(true);
 
             //2. Defines a HTTP request type
-            //urlConnection.setRequestMethod("GET"); // or POST
             urlConnection.setRequestMethod("POST"); //by default if setDoOutput(true) has been called
 
             //3. Defines a HTTP header
-            //urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
+            urlConnection.setRequestProperty("Charset", "UTF-8");
+            urlConnection.setRequestProperty("Accept-Charset", "UTF-8");
             urlConnection.setRequestProperty("Content-Type", "application/json");
-            //urlConnection.setRequestProperty("Accept", "application/json");
-            //urlConnection.setRequestProperty("Content-length",//);
             urlConnection.setRequestProperty("Content-language", "en-US");
+            /*urlConnection.setConnectTimeout(TIMEOUT_CONNECT);
+            urlConnection.setReadTimeout(TIMEOUT_READ);*/
 
             //4. Defines a HTTP body
-            //urlConnection.setFixedLengthStreamingMode(contentLength);
-            //Post data in JSON format
-            /*Gson gson = new Gson();
-            LoginObj login = new LoginObj("something@something.com", "hej");
-            String loginJson = gson.toJson(login);
-            Log.i(TAG, loginJson);*/
             JSONObject cred = new JSONObject();
             try {
                 //loginUser
@@ -84,13 +69,15 @@ public class MyAsync extends AsyncTask<String, Void, Integer> {
                 /*cred.put("id","109");
                 cred.put("value","0");*/
 
-                //setTemp: Device issue
-               /* cred.put("id" ,"110");
-                cred.put("value","30");*/
+                //setTemp: Device issue, input value = Celsius + 100, Celsius range -40 ~ 40
+                /*cred.put("id", "110");
+                cred.put("value", "100");*/
 
-               //registerUser: Database issue
-                /*cred.put("email","mobile@mobile.com");
-                cred.put("password","hi");*/
+                //registerUser: Database issue
+                /*cred.put("userName", "df");
+                cred.put("email", "mobile@mobile.com");
+                cred.put("password", "hi");*/
+                Log.i(TAG, "requestBody: " + cred);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -99,7 +86,6 @@ public class MyAsync extends AsyncTask<String, Void, Integer> {
 
             //5. Write to the request
             OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
-            Log.i(TAG, "OurputSteam: " + out.toString());
             writeStream(out, cred.toString());
 
 
