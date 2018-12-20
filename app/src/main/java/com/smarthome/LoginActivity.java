@@ -68,6 +68,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         boolean isSuccessful = false;
 
         NetRequest request = new NetRequest();
-        request.execute("loginUser",email,password);
+        request.execute("loginUser", email, password);
+    }
+
+    private boolean isAdressValid(String address) {
+        // email address = accountName + sign + domainName
+        // Find the sign '@'
+        int pos = address.indexOf("@");
+        //If the address does not contain an '@', it's not valid
+        if (pos == -1) return false;
+
+        // http://chillyfacts.com/check-an-email-exist-using-java-java-email-verification-and-validation/
+        return true;
     }
 }
