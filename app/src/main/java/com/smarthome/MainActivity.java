@@ -13,7 +13,7 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements DashboardFragment.OnFragmentInteractionListener, ManageItemsFragment.OnFragmentInteractionListener {
 
-    private static final String TAG = "DashboardActivity";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

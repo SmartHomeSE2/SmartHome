@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = LoginActivity.class.getSimpleName();
 
     private EditText edit_email_login;
     private EditText edit_password_login;
@@ -38,6 +38,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //
+    }
+
+    @Override
     public void onClick(View v) {
         if (v == text_register_login) {
             Log.i(TAG, "register clicked");
@@ -47,14 +53,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         if (v == button_sign_in_login) {
-//            Intent intent = new Intent(this, MainActivity.class);
-//            startActivity(intent);
+            Log.i(TAG, "Login clicked");
 
             String email = edit_email_login.getText().toString();
             String password = edit_password_login.getText().toString();
 
             if (StringUtils.isNoneBlank(email, password)) {
                 login(email, password);
+            } else {
+                // Print email/password empty/null message for user
+                Log.i(TAG, "Empty email/pass");
             }
 
             //myAsync.execute("checkDevice");
@@ -65,10 +73,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void login(String email, String password) {
-        boolean isSuccessful = false;
+        NetRequest request = new NetRequest(new NetRequest.NetResponseListener() {
+            @Override
+            public void onFinishNetRequest(NetResponse netResponse) {
+                int responseCode = netResponse.getResponseCode();
+                String response = netResponse.getResponse();
+                Log.i(TAG, "responseCode: " + String.valueOf(responseCode));
+                Log.i(TAG, "response: " + response);
 
-        NetRequest request = new NetRequest();
+                if (responseCode == 200 && response.equals("exists")) {
+                    startDashBoard();
+                } else {
+                    // Print out error hint to user
+                    Log.i(TAG, "Wrong login credentials");
+                }
+            }
+        });
         request.execute("loginUser", email, password);
+    }
+
+    private void startDashBoard() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private boolean isAdressValid(String address) {

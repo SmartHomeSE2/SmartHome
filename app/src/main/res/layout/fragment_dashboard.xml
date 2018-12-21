@@ -7,17 +7,239 @@
     tools:context=".DashboardFragment">
 
     <Button
-        android:id="@+id/button_manage_item_dashboard"
+        android:id="@+id/btn_fireAlarm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="28dp"
-        android:background="@android:color/transparent"
-        android:text="MANAGE ITEMS  >"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginStart="16dp"
+        android:text="Fire 97"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <Button
+        android:id="@+id/btn_burglarAlarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Burglar 98"
+        app:layout_constraintStart_toEndOf="@+id/btn_fireAlarm"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_leakageAlarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Leakage 99"
+        app:layout_constraintStart_toEndOf="@+id/btn_burglarAlarm"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/status_fire"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_fireAlarm" />
+
+    <TextView
+        android:id="@+id/status_burglar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="56dp"
+        android:text="status"
+        app:layout_constraintStart_toEndOf="@+id/status_fire"
+        app:layout_constraintTop_toBottomOf="@+id/btn_burglarAlarm" />
+
+    <TextView
+        android:id="@+id/status_leakage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:text="status"
+        app:layout_constraintStart_toEndOf="@+id/status_burglar"
+        app:layout_constraintTop_toBottomOf="@+id/btn_leakageAlarm" />
+
+    <Button
+        android:id="@+id/btn_roomTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Room 100"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <Button
+        android:id="@+id/btn_outdoorTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Outdoor 102"
+        app:layout_constraintStart_toEndOf="@+id/btn_atticTemp"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <TextView
+        android:id="@+id/status_roomTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_roomTemp" />
+
+    <TextView
+        android:id="@+id/status_outdoorTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
+        android:text="status"
+        app:layout_constraintStart_toEndOf="@+id/status_atticTemp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_outdoorTemp" />
+
+    <Button
+        android:id="@+id/btn_atticTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Attic 101"
+        app:layout_constraintStart_toEndOf="@+id/btn_roomTemp"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <TextView
+        android:id="@+id/status_atticTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:text="status"
+        app:layout_constraintStart_toEndOf="@+id/status_roomTemp"
+        app:layout_constraintTop_toBottomOf="@+id/btn_atticTemp" />
+
+    <Button
+        android:id="@+id/btn_indoorLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:text="Indoor 107"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Alarm"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Temperature"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/status_fire" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Light, fan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/status_roomTemp" />
+
+    <Button
+        android:id="@+id/btn_outdoorLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Outdoor 103"
+        app:layout_constraintStart_toEndOf="@+id/btn_indoorLight"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <Button
+        android:id="@+id/btn_fan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Fan 109"
+        app:layout_constraintStart_toEndOf="@+id/btn_outdoorLight"
+        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+    <Button
+        android:id="@+id/btn_stove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Stove 104"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/status_indoorLight" />
+
+    <Button
+        android:id="@+id/btn_window"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Window 105"
+        app:layout_constraintStart_toEndOf="@+id/btn_stove"
+        app:layout_constraintTop_toBottomOf="@+id/status_indoorLight" />
+
+    <TextView
+        android:id="@+id/status_stove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_stove" />
+
+    <TextView
+        android:id="@+id/status_window"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:text="status"
+        app:layout_constraintStart_toEndOf="@+id/status_stove"
+        app:layout_constraintTop_toBottomOf="@+id/btn_window" />
+
+    <TextView
+        android:id="@+id/status_indoorLight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="status"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_indoorLight" />
+
+    <TextView
+        android:id="@+id/status_outdoorLight"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginTop="4dp"
+        android:text="status"
+        app:layout_constraintStart_toEndOf="@+id/status_indoorLight"
+        app:layout_constraintTop_toBottomOf="@+id/btn_outdoorLight" />
+
+    <TextView
+        android:id="@+id/status_fan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="148dp"
+        android:text="status"
+        app:layout_constraintStart_toEndOf="@+id/status_outdoorLight"
+        app:layout_constraintTop_toBottomOf="@+id/btn_fan" />
 
 </android.support.constraint.ConstraintLayout>

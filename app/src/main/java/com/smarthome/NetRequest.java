@@ -1,5 +1,6 @@
 package com.smarthome;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -18,11 +19,21 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class NetRequest extends AsyncTask<String, Void, Integer> {
+public class NetRequest extends AsyncTask<String, Void, NetResponse> {
 
     private static final String TAG = NetRequest.class.getSimpleName();
 
+    private NetResponseListener mResponseListener;
+
     public NetRequest() {
+    }
+
+    public NetRequest(Context context) {
+        mResponseListener = (NetResponseListener) context;
+    }
+
+    public NetRequest(NetResponseListener listener) {
+        mResponseListener = listener;
     }
 
     //Execute this before the request is made
@@ -32,7 +43,7 @@ public class NetRequest extends AsyncTask<String, Void, Integer> {
     }
 
     @Override
-    protected Integer doInBackground(String... params) {
+    protected NetResponse doInBackground(String... params) {
 
         HttpURLConnection urlConnection = null;
 
@@ -54,14 +65,16 @@ public class NetRequest extends AsyncTask<String, Void, Integer> {
             urlConnection.setReadTimeout(TIMEOUT_READ);*/
 
             //3. Defines a HTTP body
-            JSONObject requestJason = setRequestBody(params);
+            String requestJason = setRequestBody(params);
+            Log.i(TAG, "requestBody: " + requestJason);
             if (requestJason == null) {
-                return -1;
+                Log.i(TAG, "JASON is null");
+                return null;
             }
 
             //4. Write to the request
             OutputStream out = new BufferedOutputStream(urlConnection.getOutputStream());
-            writeStream(out, requestJason.toString());
+            writeStream(out, requestJason);
 
             //5. Get response code (200/500) and read response
             int responseCode = urlConnection.getResponseCode();
@@ -69,6 +82,11 @@ public class NetRequest extends AsyncTask<String, Void, Integer> {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             String response = readStream(in);
             Log.i(TAG, "response: " + response);
+
+            NetResponse netResponse = new NetResponse();
+            netResponse.setResponseCode(responseCode);
+            netResponse.setResponse(response);
+            return netResponse;
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } finally {
@@ -76,10 +94,36 @@ public class NetRequest extends AsyncTask<String, Void, Integer> {
             if (urlConnection != null) urlConnection.disconnect();
         }
 
-        return -1;
+        return null;
     }
 
-    private JSONObject setRequestBody(String... params) {
+    @Override
+    protected void onProgressUpdate(Void... values) {
+        super.onProgressUpdate(values);
+    }
+
+    @Override
+    protected void onPostExecute(NetResponse netResponse) {
+        super.onPostExecute(netResponse);
+        if (mResponseListener != null) {
+            mResponseListener.onFinishNetRequest(netResponse);
+        } else {
+            Log.i(TAG, "listener is null");
+        }
+    }
+
+    @Override
+    protected void onCancelled(NetResponse netResponse) {
+        super.onCancelled(netResponse);
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+    }
+
+
+    private String setRequestBody(String... params) {
         JSONObject object = new JSONObject();
         String path = params[0];
         try {
@@ -107,6 +151,7 @@ public class NetRequest extends AsyncTask<String, Void, Integer> {
                     object.put("userName", userName);
                     object.put("email", email_register);
                     object.put("password", password_register);
+                    break;
                 case "setTemp":
                     //setTemp id can be 108 or 110
                     //Input value = Celsius + 100, Celsius range -40 ~ 40
@@ -118,11 +163,11 @@ public class NetRequest extends AsyncTask<String, Void, Integer> {
                 default:
                     return null;
             }
-            Log.i(TAG, "requestBody: " + object);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return object;
+        Log.i(TAG, "requestBody: " + object);
+        return object.toString();
     }
 
     private void writeStream(OutputStream os, String json) {
@@ -151,7 +196,7 @@ public class NetRequest extends AsyncTask<String, Void, Integer> {
         StringBuilder builder = new StringBuilder();
         try {
             while ((line = reader.readLine()) != null) {
-                builder.append(line).append("\n");
+                builder.append(line);
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -166,24 +211,11 @@ public class NetRequest extends AsyncTask<String, Void, Integer> {
         return builder.toString();
     }
 
-    @Override
-    protected void onProgressUpdate(Void... values) {
-        super.onProgressUpdate(values);
+    public interface NetResponseListener {
+        void onFinishNetRequest(NetResponse netResponse);
     }
 
-    @Override
-    protected void onPostExecute(Integer integer) {
-        super.onPostExecute(integer);
-    }
-
-
-    @Override
-    protected void onCancelled(Integer integer) {
-        super.onCancelled(integer);
-    }
-
-    @Override
-    protected void onCancelled() {
-        super.onCancelled();
+    public void setNetResponseListener(NetResponseListener listener) {
+        mResponseListener = listener;
     }
 }
