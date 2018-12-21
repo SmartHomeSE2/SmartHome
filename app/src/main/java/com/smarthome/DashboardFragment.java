@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,6 +23,17 @@ import android.widget.Button;
  * A simple {@link Fragment} subclass.
  */
 public class DashboardFragment extends Fragment implements View.OnClickListener {
+
+    // Default Values
+    //TODO: Get values from server
+    String[] deviceNames = {"Indoor Light", "Outdoor Light", "Outside Temperature",
+            "Room Temperature", "Attic Temperature"};
+    String[] deviceStatus = {"Off", "On", "2", "24", "12"};
+    String[] deviceTargets = {"n", "n", "n", "30", "13"};
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     private static final String TAG = "DashboardFragment";
     private OnFragmentInteractionListener mListener;
@@ -42,6 +55,16 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
             mListener.onFragmentInteraction("Smart Home", R.drawable.ic_home_black_24dp);
         }
         setHasOptionsMenu(true);
+
+        //RecyclerView
+        recyclerView = rootView.findViewById(R.id.recycler_dashboard);
+        Log.i(TAG, "recyclerview found");
+
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new DashboardAdapter(deviceNames, deviceStatus, deviceTargets);
+        recyclerView.setAdapter(adapter);
 
         // Button
         button_manage_item = rootView.findViewById(R.id.button_manage_item_dashboard);

@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".DashboardFragment">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_dashboard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/button_manage_item_dashboard"
         android:layout_width="wrap_content"
@@ -19,119 +28,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/text_outside_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Outside Temp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/image_outside_temp"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="8dp"
-        android:contentDescription="Outside Temperature"
-        android:src="@drawable/ic_lens_black_24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_outside_temp" />
-
-    <TextView
-        android:id="@+id/text_room_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="Room Temp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/image_outside_temp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_outside_temp" />
-
-    <ImageView
-        android:id="@+id/image_room_temp"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="8dp"
-        android:contentDescription="Room Temperature"
-        android:src="@drawable/ic_lens_black_24dp"
-        app:layout_constraintEnd_toEndOf="@+id/text_room_temp"
-        app:layout_constraintStart_toStartOf="@+id/text_room_temp"
-        app:layout_constraintTop_toBottomOf="@+id/text_room_temp" />
-
-    <TextView
-        android:id="@+id/text_attic_temp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="Attic Temp"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image_outside_temp"
-        app:layout_constraintTop_toBottomOf="@+id/text_outside_temp" />
-
-    <ImageView
-        android:id="@+id/image_attic_temp"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="8dp"
-        android:contentDescription="Attic Temperature"
-        android:src="@drawable/ic_lens_black_24dp"
-        app:layout_constraintEnd_toEndOf="@+id/text_attic_temp"
-        app:layout_constraintStart_toStartOf="@+id/text_attic_temp"
-        app:layout_constraintTop_toBottomOf="@+id/text_attic_temp" />
-
-    <TextView
-        android:id="@+id/text_inside_light"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
-        android:text="Inside Light"
-        android:textAlignment="textStart"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/image_room_temp"
-        app:layout_constraintTop_toBottomOf="@+id/image_room_temp" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/ic_lightbulb_outline_black_24dp"
-        app:layout_constraintStart_toStartOf="@+id/text_inside_light"
-        app:layout_constraintTop_toBottomOf="@+id/text_inside_light" />
-
-    <TextView
-        android:id="@+id/text_outside_light"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
-        android:text="Outside Light"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="@+id/image_attic_temp"
-        app:layout_constraintTop_toBottomOf="@+id/image_attic_temp" />
-
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_lightbulb_outline_black_24dp"
-        app:layout_constraintEnd_toEndOf="@+id/text_outside_light"
-        app:layout_constraintTop_toBottomOf="@+id/text_outside_light" />
 
 </android.support.constraint.ConstraintLayout>
