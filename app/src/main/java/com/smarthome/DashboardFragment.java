@@ -27,7 +27,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     // Default Values
     //TODO: Get values from server
     String[] deviceNames = {"Indoor Light", "Outdoor Light", "Outside Temperature",
-            "Room Temperature", "Attic Temperature"};
+            "Room Temperature", "Attic Temperature", "Fire Alarm", "Leak Alarm", "Burglar Alarm"};
     String[] deviceStatus = {"Off", "On", "2", "24", "12"};
     String[] deviceTargets = {"n", "n", "n", "30", "13"};
 
@@ -35,7 +35,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    private static final String TAG = "DashboardFragment";
+    private static final String TAG = DashboardFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
 
     private Button button_manage_item;
@@ -58,7 +58,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
 
         //RecyclerView
         recyclerView = rootView.findViewById(R.id.recycler_dashboard);
-        Log.i(TAG, "recyclerview found");
+        Log.i(TAG, "RecyclerView found");
 
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -94,6 +94,15 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         switch (item.getItemId()) {
             case R.id.menu_manage_items:
                 gotoManageItemsFragment();
+                return true;
+            case android.R.id.home:
+                Log.i(TAG, "home button pressed");
+                if (getActivity() != null) {
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    if (fm.getBackStackEntryCount() > 0) {
+                        fm.popBackStack();
+                    }
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

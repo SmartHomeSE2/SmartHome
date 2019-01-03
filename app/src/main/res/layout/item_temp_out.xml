@@ -31,7 +31,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="00°C"
-        app:layout_constraintStart_toStartOf="@+id/title_temp_in"
-        app:layout_constraintTop_toBottomOf="@+id/title_temp_in" />
+        app:layout_constraintStart_toStartOf="@+id/title_temp_out"
+        app:layout_constraintTop_toBottomOf="@+id/title_temp_out" />
 
 </android.support.constraint.ConstraintLayout>
