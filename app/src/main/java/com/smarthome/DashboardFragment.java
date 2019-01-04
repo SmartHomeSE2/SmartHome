@@ -27,7 +27,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
     // Default Values
     //TODO: Get values from server
     String[] deviceNames = {"Indoor Light", "Outdoor Light", "Outside Temperature",
-            "Room Temperature", "Attic Temperature", "Fire Alarm", "Leak Alarm", "Burglar Alarm"};
+            "Room Temperature", "Attic Temperature", "Fire Alarm", "Leak Alarm", "Burglar Alarm", "Oven", "Window", "Fan"};
     String[] deviceStatus = {"Off", "On", "2", "24", "12"};
     String[] deviceTargets = {"n", "n", "n", "30", "13"};
 
@@ -37,8 +37,6 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
 
     private static final String TAG = DashboardFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
-
-    private Button button_manage_item;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -66,20 +64,13 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         adapter = new DashboardAdapter(deviceNames, deviceStatus, deviceTargets);
         recyclerView.setAdapter(adapter);
 
-        // Button
-        button_manage_item = rootView.findViewById(R.id.button_manage_item_dashboard);
-        button_manage_item.setOnClickListener(this);
-
         // Return view
         return rootView;
     }
 
     @Override
     public void onClick(View v) {
-        if (v == button_manage_item) {
-            Log.i(TAG, "button clicked");
-            gotoManageItemsFragment();
-        }
+
     }
 
     ///////////////////////////////////// Menu Handling ////////////////////////////////////////////

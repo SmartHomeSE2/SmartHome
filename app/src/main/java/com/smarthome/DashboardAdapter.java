@@ -77,11 +77,19 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    // ViewHolder for Other Devices
-    class ViewHolderStatus extends RecyclerView.ViewHolder {
+    // ViewHolder for Burglary Alarm
+    class ViewHolderBurgle extends RecyclerView.ViewHolder {
+        public TextView title, status;
+        public Button checkButton, toggleButton;
+        public ImageView alarmImage;
 
-        public ViewHolderStatus(View itemView) {
+        public ViewHolderBurgle(View itemView) {
             super(itemView);
+            title = itemView.findViewById(R.id.title_burgle);
+            status = itemView.findViewById(R.id.status_burglary);
+            checkButton = itemView.findViewById(R.id.button_check);
+            toggleButton = itemView.findViewById(R.id.button_toggle);
+            alarmImage = itemView.findViewById(R.id.image_burglary);
         }
     }
 
@@ -108,11 +116,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 return new ViewHolderTempIn(tempIn);
             case 5:
             case 6:
-            case 7:
+            case 8:
+            case 9:
+            case 10:
                 View alarm = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_alarm, viewGroup, false);
                 return new ViewHolderAlarm(alarm);
-            case 8:
-
+            case 7:
+                View burglary = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_burglary, viewGroup, false);
+                return new ViewHolderBurgle(burglary);
         }
         return null;
     }
@@ -152,13 +163,26 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 viewHolderLeak.status.setText("Clear!");
                 break;
             case 7:
-                ViewHolderAlarm viewHolderBurglary = (ViewHolderAlarm) deviceViewHolder;
-                viewHolderBurglary.alarmImage.setImageResource(R.drawable.ic_home_black_24dp);
-                viewHolderBurglary.title.setText(names[i]);
-                viewHolderBurglary.status.setText("Clear!");
+                ViewHolderBurgle viewHolderBurgle = (ViewHolderBurgle) deviceViewHolder;
+                viewHolderBurgle.alarmImage.setImageResource(R.drawable.ic_home_black_24dp);
+                viewHolderBurgle.title.setText(names[i]);
+                viewHolderBurgle.status.setText("Clear!");
                 break;
             case 8:
-
+                ViewHolderAlarm viewHolderOven = (ViewHolderAlarm) deviceViewHolder;
+                viewHolderOven.title.setText(names[i]);
+                viewHolderOven.status.setText("Off");
+                break;
+            case 9:
+                ViewHolderAlarm viewHolderWindow = (ViewHolderAlarm) deviceViewHolder;
+                viewHolderWindow.title.setText(names[i]);
+                viewHolderWindow.status.setText("Closed");
+                break;
+            case 10:
+                ViewHolderAlarm viewHolderFan = (ViewHolderAlarm) deviceViewHolder;
+                viewHolderFan.title.setText(names[i]);
+                viewHolderFan.status.setText("Off");
+                break;
         }
 
     }
