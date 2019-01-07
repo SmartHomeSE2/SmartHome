@@ -87,10 +87,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             String temp = device.getValue() + "°C";
             holder.actualTempIn.setText(temp);
-            /*String target = String.valueOf(Integer.parseInt(device.getTarget()) - 100);
-            if (!target.trim().isEmpty() && Integer.parseInt(target) > 0) {
+            String target = device.getTarget();
+            if (!target.trim().isEmpty()) {
                 holder.targetTempIn.setSelection(Integer.parseInt(target));
-            }*/
+            }
         }
 
         // Display devices
@@ -192,9 +192,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    if (getAdapterPosition() == 3 || getAdapterPosition() == 4) {
+                    int position = getAdapterPosition();
+                    if (position == 3 || position == 4) {
+                        Log.i("haha", "position " + position);
                         if (mItemClickListener != null) {
-                            mItemClickListener.onItemSelected(adapterView.getItemAtPosition(i).toString(), getAdapterPosition());
+                            mItemClickListener.onItemSelected(adapterView.getItemAtPosition(i).toString(), position);
                         }
                     }
                 }

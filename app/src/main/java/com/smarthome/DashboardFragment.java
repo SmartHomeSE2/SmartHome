@@ -178,7 +178,7 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
     public void onItemSelected(final String targetTemp, int position) {
         // Only getting temp set response
         // setTemp target indoor/attic
-        /*final Device device = devices.get(position);
+        final Device device = devices.get(position);
         NetService request = new NetService(new NetService.NetResponseListener() {
             @Override
             public void onFinishNetRequest(NetResponse netResponse) {
@@ -195,7 +195,16 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
             }
         });
 
-        request.execute(Constants.SET_TEMP, String.valueOf(device.getId()), String.valueOf(targetTemp));*/
+        int id = -1;
+        if (device.getName().equals(Constants.INDOOR_TEMPERATURE)) {
+            Log.i("haha", "target room");
+            id = 108;
+        } else if (device.getName().equals(Constants.ATTIC_TEMPERATURE)) {
+            Log.i("haha", "target attic");
+
+            id = 110;
+        }
+        request.execute(Constants.SET_TEMP, String.valueOf(id), String.valueOf(targetTemp + 100));
     }
 
     ///////////////////////////////////// Common Methods ///////////////////////////////////////////
