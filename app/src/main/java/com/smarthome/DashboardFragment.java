@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,7 +25,7 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
 
     private static final String TAG = DashboardFragment.class.getSimpleName();
     private OnFragmentInteractionListener mListener;
-    private NetResponse mNetResponse;
+    private NetResponse mNetResponse=null;
 
     private Button fireAlarm, burglarAlarm, leakageAlarm, tempRoom, tempAttic, tempOutdoor, lightIndoor, lightOutdoor, stove, window, fan;
     private TextView status_fireAlarm, status_burglarAlarm, status_leakageAlarm, status_tempRoom, status_tempAttic, status_tempOutdoor, status_lightIndoor, status_lightOutdoor, status_stove, status_window, status_fan;
@@ -92,7 +93,17 @@ public class DashboardFragment extends Fragment implements View.OnClickListener 
         NetRequest request = new NetRequest(new NetRequest.NetResponseListener() {
             @Override
             public void onFinishNetRequest(NetResponse netResponse) {
-                mNetResponse = netResponse;
+                //mNetResponse = netResponse;
+                int responseCode = netResponse.getResponseCode();
+                String response = netResponse.getResponse();
+                Log.i(TAG, "responseCode: " + String.valueOf(responseCode));
+                Log.i(TAG, "response: " + response);
+
+                if (responseCode == 200 && response.equals("exists")) {
+                } else {
+                    // Print out error hint to user
+                    Log.i(TAG, "Wrong login credentials");
+                }
             }
         });
 
