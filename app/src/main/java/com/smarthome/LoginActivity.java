@@ -17,15 +17,23 @@ import com.smarthome.Data.NetResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
 
     private EditText edit_email_login;
     private EditText edit_password_login;
+<<<<<<< HEAD
     private TextView text_register_login;
     private Button button_sign_in_login;
     private CheckBox checkBox_rememberMe;
+=======
+    private Button button_sign_in_login;
+    private CheckBox checkBox_rememberMe;
+    private TextView text_register_login;
+>>>>>>> 5e26d55a8b8a825b5ef95a7bb63d388c95ccb927
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +62,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             edit_password_login.setText(saved_password);
             checkBox_rememberMe.setChecked(true);
         }
+<<<<<<< HEAD
+=======
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //
+>>>>>>> 5e26d55a8b8a825b5ef95a7bb63d388c95ccb927
     }
 
     @Override
@@ -74,9 +91,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (StringUtils.isNoneBlank(email, password)) {
                 login(email, password);
             } else {
+<<<<<<< HEAD
                 Toast.makeText(this, "Empty Email or password", Toast.LENGTH_SHORT).show();
             }
 
+=======
+                // Print email/password empty/null message for user
+                Log.i(TAG, "Empty email/pass");
+            }
+
+            //myAsync.execute("checkDevice");
+            //myAsync.execute("toggleDevice");
+            //myAsync.execute("setTemp"); wait for Device's team to tackle it
+            //myAsync.execute("registerUser");
+>>>>>>> 5e26d55a8b8a825b5ef95a7bb63d388c95ccb927
         }
 
         if (v == checkBox_rememberMe) {
@@ -98,6 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void login(String email, String password) {
+<<<<<<< HEAD
         NetService request = new NetService(new NetService.NetResponseListener() {
             @Override
             public void onFinishNetRequest(NetResponse netResponse) {
@@ -122,6 +151,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
         request.execute(Constants.LOGIN_USER, email, password);
+=======
+        NetRequest request = new NetRequest(new NetRequest.NetResponseListener() {
+            @Override
+            public void onFinishNetRequest(NetResponse netResponse) {
+                int responseCode = netResponse.getResponseCode();
+                String response = netResponse.getResponse();
+                Log.i(TAG, "responseCode: " + String.valueOf(responseCode));
+                Log.i(TAG, "response: " + response);
+
+                if (responseCode == 200 && response.equals("exists")) {
+                    startDashBoard();
+                } else {
+                    // Print out error hint to user
+                    Log.i(TAG, "Wrong login credentials");
+                }
+            }
+        });
+        request.execute("loginUser", email, password);
+>>>>>>> 5e26d55a8b8a825b5ef95a7bb63d388c95ccb927
     }
 
     private void startDashBoard() {

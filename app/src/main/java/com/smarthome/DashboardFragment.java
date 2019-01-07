@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+<<<<<<< HEAD
 import android.widget.Toast;
 
 import com.smarthome.Data.Device;
@@ -21,6 +22,12 @@ import com.smarthome.Data.NetResponse;
 
 import java.util.ArrayList;
 
+=======
+import android.widget.Button;
+import android.widget.TextView;
+
+// Todo: Fix response delay problem
+>>>>>>> 5e26d55a8b8a825b5ef95a7bb63d388c95ccb927
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -28,14 +35,25 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
     // Log TAG
     private static final String TAG = DashboardFragment.class.getSimpleName();
 
+<<<<<<< HEAD
     // Default Values
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private ArrayList<Device> devices = new ArrayList<>(15);
     private RecyclerView.LayoutManager layoutManager;
     //private ArrayList<Integer> spinnerData;
+=======
+    private static final String TAG = DashboardFragment.class.getSimpleName();
+>>>>>>> 5e26d55a8b8a825b5ef95a7bb63d388c95ccb927
     private OnFragmentInteractionListener mListener;
+    private NetResponse mNetResponse=null;
 
+<<<<<<< HEAD
+=======
+    private Button fireAlarm, burglarAlarm, leakageAlarm, tempRoom, tempAttic, tempOutdoor, lightIndoor, lightOutdoor, stove, window, fan;
+    private TextView status_fireAlarm, status_burglarAlarm, status_leakageAlarm, status_tempRoom, status_tempAttic, status_tempOutdoor, status_lightIndoor, status_lightOutdoor, status_stove, status_window, status_fan;
+
+>>>>>>> 5e26d55a8b8a825b5ef95a7bb63d388c95ccb927
     public DashboardFragment() {
         // Required empty public constructor
     }
@@ -52,6 +70,7 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
         }
         setHasOptionsMenu(true);
 
+<<<<<<< HEAD
         //RecyclerView
         recyclerView = rootView.findViewById(R.id.recycler_dashboard);
 
@@ -63,11 +82,117 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
         adapter = new DashboardAdapter(getContext(), devices.subList(0, 11));
         ((DashboardAdapter) adapter).SetOnItemClickListener(this);
         recyclerView.setAdapter(adapter);
+=======
+        // Button
+        fireAlarm = rootView.findViewById(R.id.btn_fireAlarm);
+        burglarAlarm = rootView.findViewById(R.id.btn_burglarAlarm);
+        leakageAlarm = rootView.findViewById(R.id.btn_leakageAlarm);
+        tempRoom = rootView.findViewById(R.id.btn_roomTemp);
+        tempAttic = rootView.findViewById(R.id.btn_atticTemp);
+        tempOutdoor = rootView.findViewById(R.id.btn_outdoorTemp);
+        lightIndoor = rootView.findViewById(R.id.btn_indoorLight);
+        lightOutdoor = rootView.findViewById(R.id.btn_outdoorLight);
+        fan = rootView.findViewById(R.id.btn_fan);
+        stove = rootView.findViewById(R.id.btn_stove);
+        window = rootView.findViewById(R.id.btn_window);
+
+        fireAlarm.setOnClickListener(this);
+        burglarAlarm.setOnClickListener(this);
+        leakageAlarm.setOnClickListener(this);
+        tempRoom.setOnClickListener(this);
+        tempOutdoor.setOnClickListener(this);
+        tempAttic.setOnClickListener(this);
+        lightOutdoor.setOnClickListener(this);
+        lightIndoor.setOnClickListener(this);
+        fan.setOnClickListener(this);
+        stove.setOnClickListener(this);
+        window.setOnClickListener(this);
+
+        // TextView
+        status_fireAlarm = rootView.findViewById(R.id.status_fire);
+        status_leakageAlarm = rootView.findViewById(R.id.status_leakage);
+        status_burglarAlarm = rootView.findViewById(R.id.status_burglar);
+        status_tempAttic = rootView.findViewById(R.id.status_atticTemp);
+        status_tempOutdoor = rootView.findViewById(R.id.status_outdoorTemp);
+        status_tempRoom = rootView.findViewById(R.id.status_roomTemp);
+        status_lightIndoor = rootView.findViewById(R.id.status_indoorLight);
+        status_lightOutdoor = rootView.findViewById(R.id.status_outdoorLight);
+        status_fan = rootView.findViewById(R.id.status_fan);
+        status_stove = rootView.findViewById(R.id.status_stove);
+        status_window = rootView.findViewById(R.id.status_window);
+>>>>>>> 5e26d55a8b8a825b5ef95a7bb63d388c95ccb927
 
         // Return view
         return rootView;
     }
 
+<<<<<<< HEAD
+=======
+    @Override
+    public void onClick(View v) {
+        NetRequest request = new NetRequest(new NetRequest.NetResponseListener() {
+            @Override
+            public void onFinishNetRequest(NetResponse netResponse) {
+                //mNetResponse = netResponse;
+                int responseCode = netResponse.getResponseCode();
+                String response = netResponse.getResponse();
+                Log.i(TAG, "responseCode: " + String.valueOf(responseCode));
+                Log.i(TAG, "response: " + response);
+
+                if (responseCode == 200 && response.equals("exists")) {
+                } else {
+                    // Print out error hint to user
+                    Log.i(TAG, "Wrong login credentials");
+                }
+            }
+        });
+
+        if (v == fireAlarm) {
+            request.execute("checkDevice", "97");
+            //status_fireAlarm.setText(mNetResponse.getResponse().equals("0") ? "OFF" : "ON");
+        }
+        if (v == burglarAlarm) {
+            request.execute("checkDevice", "98");
+            status_burglarAlarm.setText(mNetResponse.getResponse().equals("0") ? "OFF" : "ON");
+        }
+        if (v == leakageAlarm) {
+            request.execute("checkDevice", "99");
+            status_leakageAlarm.setText(mNetResponse.getResponse().equals("0") ? "OFF" : "ON");
+        }
+        if (v == tempAttic) {
+            request.execute("checkDevice", "101");
+            status_tempAttic.setText(mNetResponse.getResponse());
+        }
+        if (v == tempOutdoor) {
+            request.execute("checkDevice", "102");
+            status_tempOutdoor.setText(mNetResponse.getResponse());
+        }
+        if (v == tempRoom) {
+            request.execute("checkDevice", "100");
+            status_tempRoom.setText(mNetResponse.getResponse());
+        }
+        if (v == lightIndoor) {
+
+        }
+        if (v == lightOutdoor) {
+
+        }
+        if (v == fan) {
+
+        }
+        if (v == stove) {
+            request.execute("checkDevice", "104");
+            status_stove.setText(mNetResponse.getResponse().equals("0") ? "OFF" : "ON");
+        }
+        if (v == window) {
+            request.execute("checkDevice", "105");
+            status_window.setText(mNetResponse.getResponse().equals("0") ? "OFF" : "ON");
+        }
+       // Log.i(TAG, mNetResponse.toString());
+
+    }
+
+>>>>>>> 5e26d55a8b8a825b5ef95a7bb63d388c95ccb927
     ///////////////////////////////////// Menu Handling ////////////////////////////////////////////
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
