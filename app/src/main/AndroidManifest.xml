@@ -22,10 +22,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-<<<<<<< HEAD
-
-=======
->>>>>>> 5e26d55a8b8a825b5ef95a7bb63d388c95ccb927
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

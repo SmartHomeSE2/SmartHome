@@ -34,15 +34,12 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
 
     @Override
     public void onFragmentInteraction(String title, int icon) {
-<<<<<<< HEAD
 
-=======
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(title);
             getSupportActionBar().setHomeButtonEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeAsUpIndicator(icon);
         }
->>>>>>> 5e26d55a8b8a825b5ef95a7bb63d388c95ccb927
     }
 }

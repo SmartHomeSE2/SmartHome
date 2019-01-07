@@ -1,7 +1,5 @@
 package com.smarthome.Data;
 
-import android.support.annotation.NonNull;
-
 public class NetResponse {
     private int responseCode;
     private String response;
