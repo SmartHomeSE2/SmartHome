@@ -8,14 +8,11 @@
         android:title="Profile"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/menu_manage_items"
-        android:title="Manage items"
-        app:showAsAction="collapseActionView" />
 
     <item
-        android:id="@+id/menu_settings"
-        android:title="Settings"
-        app:showAsAction="collapseActionView" />
+        android:id="@+id/menu_refresh"
+        android:icon="@drawable/ic_refresh_black_24dp"
+        android:title="Refresh"
+        app:showAsAction="always" />
 
 </menu>
