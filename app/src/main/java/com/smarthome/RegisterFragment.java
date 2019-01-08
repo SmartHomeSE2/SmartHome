@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.smarthome.Data.NetResponse;
@@ -31,7 +32,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     private EditText edit_password;
     private EditText edit_repeat_password;
     private Button btn_register;
-
+    private TextView action_login;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -48,8 +49,12 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         edit_email = view.findViewById(R.id.edit_email_register);
         edit_password = view.findViewById(R.id.edit_password_register);
         edit_repeat_password = view.findViewById(R.id.edit_repeatPassword_register);
+
         btn_register = view.findViewById(R.id.button_create_account_register);
         btn_register.setOnClickListener(this);
+
+        action_login = view.findViewById(R.id.text_login_register);
+        action_login.setOnClickListener(this);
 
         return view;
     }
@@ -83,7 +88,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
                             if (responseCode == 200 && response.equals("New user created")) {
                                 startLoginActivity();
-                                Log.i(TAG, "new user created");
+                                Toast.makeText(getContext(), "New user created successfully", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(getContext(), "Register user failed", Toast.LENGTH_SHORT).show();
                             }
@@ -95,6 +100,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
                 registerUser.execute(Constants.REGISTER_USER, userName, email, password);
             }
+        }
+
+        if (view == action_login) {
+            startLoginActivity();
         }
     }
 

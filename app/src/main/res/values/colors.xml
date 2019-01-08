@@ -6,4 +6,5 @@
     <color name="white">#FFF</color>
     <color name="black">#000</color>
     <color name="defaultColor">#EEEEEE</color>
+    <color name="lightBlue">#61c0d1</color>
 </resources>

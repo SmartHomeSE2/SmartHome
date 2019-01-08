@@ -1,18 +1,14 @@
 package com.smarthome;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -24,13 +20,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     // Log TAG
     private String TAG = DashboardAdapter.class.getSimpleName();
 
-    private Context mContext;
     private List<Device> devices;
     private OnItemClickListener mItemClickListener;
 
-    public DashboardAdapter(Context context, List<Device> devices) {
-        mContext = context;
+    public DashboardAdapter(List<Device> devices) {
         this.devices = devices;
+        for (int i = 0; i < devices.size(); i++) {
+            Log.i(TAG, String.valueOf(i) + devices.get(i).getName());
+        }
     }
 
     // Inflate XML Layouts and return ViewHolders
@@ -38,14 +35,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         switch (viewType) {
-            case Device.CONTROL_TYPE:
-                View light = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_control, viewGroup, false);
+            case Device.TOGGLE_TYPE:
+                View light = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_toggle, viewGroup, false);
                 return new ViewHolderControl(light);
-            case Device.TEMP_IN_TYPE:
-                View tempIn = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_temp_in, viewGroup, false);
-                return new ViewHolderTempIn(tempIn);
-            case Device.DISPLAY_TYPE:
-                View alarm = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_display, viewGroup, false);
+            case Device.CHECK_TYPE:
+                View alarm = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_check, viewGroup, false);
                 return new ViewHolderDisplay(alarm);
             case Device.BURGLAR_ALARM_TYPE:
                 View burglary = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_burglary, viewGroup, false);
@@ -80,18 +74,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.control.setChecked(device.getValue().equals("1"));
 
         }
-        // Temperature
-        if (deviceViewHolder instanceof ViewHolderTempIn) {
-            ViewHolderTempIn holder = (ViewHolderTempIn) deviceViewHolder;
-            holder.title.setText(device.getName());
-
-            String temp = device.getValue() + "°C";
-            holder.actualTempIn.setText(temp);
-            String target = device.getTarget();
-            if (!target.trim().isEmpty()) {
-                holder.targetTempIn.setSelection(Integer.parseInt(target), false);
-            }
-        }
 
         // Display devices
         if (deviceViewHolder instanceof ViewHolderDisplay) {
@@ -116,15 +98,21 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     holder.displayImage.setImageResource(R.drawable.ic_window);
                     holder.status.setText(deviceValue.equals("1") ? "isOn" : "isOff");
                     break;
-                case Constants.OUTDOOR_TEMPERATURE:
+                case Constants.INDOOR_TEMPERATURE:
+                case Constants.ATTIC_TEMPERATURE:
                     holder.displayImage.setImageResource(R.drawable.ic_ac_unit_black_24dp);
                     String temp = deviceValue + "°C";
                     holder.status.setText(temp);
                     break;
-                case Constants.ATTIC_TEMPERATURE:
-                    holder.displayImage.setImageResource(R.drawable.ic_ac_unit_black_24dp);
-                    holder.status.setText(deviceValue);
+                case Constants.OUTDOOR_LIGHT:
+                    holder.displayImage.setImageResource(R.drawable.ic_lightbulb_outline_black_24dp);
+                    if (deviceValue.equals("1")) {
+                        holder.status.setText("isOn");
+                    } else {
+                        holder.status.setText("isOff");
+                    }
                     break;
+
             }
         }
 
@@ -134,7 +122,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.title.setText(device.getName());
             holder.burgleImage.setImageResource(R.drawable.ic_burglar_alarm);
 
-            if (device.getTarget().equals("1")) { // value 1 represents enable
+            if (device.getIsEnable().equals("1")) {
                 holder.status.setText(device.getValue().equals("1") ? "Alert!" : "Clear");
                 holder.enableBurgleAlarm.setChecked(true);
             } else {
@@ -174,80 +162,52 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 if (mItemClickListener != null) {
                     mItemClickListener.onSwitchToggle(isChecked, position);
                     Log.i("xixi", devices.get(position).getName() + " toggled: " + isChecked);
-                    Log.i("xixi", "device target: " + devices.get(position).getTarget());
+                    Log.i("xixi", "device target: " + devices.get(position).getIsEnable());
 
                 }
             }
         }
     }
 
-    // ViewHolder for Indoor Temperatures
-    class ViewHolderTempIn extends RecyclerView.ViewHolder implements AdapterView.OnItemSelectedListener {
-        public TextView title, actualTempIn;
-        public Spinner targetTempIn;
-
-        public ViewHolderTempIn(View itemView) {
-            super(itemView);
-            title = itemView.findViewById(R.id.title_temp_in);
-            actualTempIn = itemView.findViewById(R.id.actual_temp_in);
-            targetTempIn = itemView.findViewById(R.id.spinner_targetTemp);
-
-            ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(mContext, R.array.spinner_data, android.R.layout.simple_spinner_dropdown_item);
-            spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            targetTempIn.setAdapter(spinnerAdapter);
-
-            targetTempIn.setOnItemSelectedListener(this);
-        }
-
-        @Override
-        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-            int position = getAdapterPosition();
-
-            if (position == 3 || position == 4) {
-                Device device = getClickedItem(position);
-                String deviceTarget = device.getTarget();
-                String newTarget = adapterView.getItemAtPosition(i).toString();
-                if (!deviceTarget.equals(newTarget)) {
-                    if (mItemClickListener != null) {
-                        mItemClickListener.onItemSelected(adapterView.getItemAtPosition(i).toString(), position);
-                        Log.i("haha", "temp position " + position);
-                        Log.i("haha", "device target temp: " + devices.get(position).getTarget());
-                    }
-                }
-
-            }
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
-
-        }
-    }
-
-    // ViewHolder for Alarms
-    class ViewHolderDisplay extends RecyclerView.ViewHolder {
+    // ViewHolder for Checkable devices
+    class ViewHolderDisplay extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView title, status;
         public ImageView displayImage;
+        public Button check;
 
         public ViewHolderDisplay(View itemView) {
             super(itemView);
             displayImage = itemView.findViewById(R.id.image_display);
             title = itemView.findViewById(R.id.title_display);
             status = itemView.findViewById(R.id.text_display_status);
+            check = itemView.findViewById(R.id.button_check_display_device);
+            check.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClick(position);
+            }
         }
     }
 
     // ViewHolder for Burglary Alarm
-    class ViewHolderBurgle extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
+    class ViewHolderBurgle extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
         public TextView title, status;
         public Switch enableBurgleAlarm;
         public ImageView burgleImage;
+        public Button check;
 
         public ViewHolderBurgle(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.title_burgle);
             status = itemView.findViewById(R.id.status_burglary);
             burgleImage = itemView.findViewById(R.id.image_burglary);
+
+            check = itemView.findViewById(R.id.button_check_burglar_alarm);
+            check.setOnClickListener(this);
 
             enableBurgleAlarm = itemView.findViewById(R.id.switch_burgle);
             enableBurgleAlarm.setOnCheckedChangeListener(this);
@@ -256,24 +216,31 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
             int position = getAdapterPosition();
-            boolean isEnable = devices.get(position).getTarget().equals("1");
+            boolean isEnable = devices.get(position).getIsEnable().equals("1");
             if ((isCheck && !isEnable) || (!isCheck && isEnable)) {
 
                 if (mItemClickListener != null) {
-                    Log.i("xixi", "Burglar enable: " + devices.get(position).getTarget());
+                    Log.i("xixi", "Burglar enable: " + devices.get(position).getIsEnable());
                     mItemClickListener.onSwitchToggle(isCheck, getAdapterPosition());
                 }
             }
 
         }
-    }
 
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClick(position);
+            }
+        }
+    }
 
     // Click listener
     public interface OnItemClickListener {
         void onSwitchToggle(boolean isChecked, int position);
 
-        void onItemSelected(String targetTemp, int position);
+        void onItemClick(int position);
 
     }
 
@@ -284,6 +251,4 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public Device getClickedItem(int position) {
         return devices.get(position);
     }
-
-
 }

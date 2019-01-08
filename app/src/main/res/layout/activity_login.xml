@@ -9,11 +9,11 @@
 
     <Button
         android:id="@+id/button_sign_in_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="44dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:background="@color/colorAccent"
+        android:background="@drawable/signin_register_button"
         android:text="@string/sign_in"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/edit_password_layout"
@@ -77,8 +77,6 @@
         android:id="@+id/text_not_registered_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif"
         android:text="Not registered?"
         app:layout_constraintBottom_toTopOf="@+id/text_register_login"
@@ -93,7 +91,7 @@
         android:clickable="true"
         android:focusable="true"
         android:text="Click here to register"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/lightBlue"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -107,19 +105,5 @@
         android:text="Remember Me"
         app:layout_constraintStart_toStartOf="@+id/edit_password_layout"
         app:layout_constraintTop_toBottomOf="@+id/edit_password_layout" />
-
-    <TextView
-        android:id="@+id/text_reset_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="147dp"
-        android:layout_marginEnd="147dp"
-        android:layout_marginBottom="8dp"
-        android:text="Reset Password"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/text_not_registered_login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

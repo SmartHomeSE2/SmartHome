@@ -3,38 +3,37 @@ package com.smarthome.Data;
 public class Device {
 
     // Type
-    public static final int CONTROL_TYPE = 0;
-    public static final int TEMP_IN_TYPE = 1;
-    public static final int DISPLAY_TYPE = 2;
-    public static final int BURGLAR_ALARM_TYPE = 3;
+    public static final int TOGGLE_TYPE = 0;
+    public static final int CHECK_TYPE = 1;
+    public static final int BURGLAR_ALARM_TYPE = 2;
     private int viewType;
 
     private int id;
     private String name;
     private String value;
-    private String target;
+    private String isEnable;
 
     public Device() {
     }
 
-    public Device(int id,String name,String value){
+    public Device(int id, String name, String value) {
         this.id = id;
         this.name = name;
         this.value = value;
     }
 
-    public Device(int id,String name,String value,int viewType){
+    public Device(int id, String name, String value, int viewType) {
         this.id = id;
         this.name = name;
         this.value = value;
         this.viewType = viewType;
     }
 
-    public Device(int id, String name, String value, String target, int viewType) {
+    public Device(int id, String name, String value, String isEnable, int viewType) {
         this.id = id;
         this.name = name;
         this.value = value;
-        this.target = target;
+        this.isEnable = isEnable;
         this.viewType = viewType;
     }
 
@@ -58,12 +57,12 @@ public class Device {
         this.value = value;
     }
 
-    public String getTarget() {
-        return target;
+    public String getIsEnable() {
+        return isEnable;
     }
 
-    public void setTarget(String target_value) {
-        this.target = target_value;
+    public void setIsEnable(String isEnable) {
+        this.isEnable = isEnable;
     }
 
     public int getViewType() {

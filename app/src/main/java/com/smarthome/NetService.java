@@ -152,14 +152,11 @@ public class NetService extends AsyncTask<String, Void, NetResponse> {
                     object.put("email", email_register);
                     object.put("password", password_register);
                     break;
-                case Constants.SET_TEMP:
-                    //setTemp id can be 108 or 110
-                    //Input value = Celsius + 100, Celsius range -40 ~ 40
-                    String id_setTemp = params[1];
-                    String value_setTemp = String.valueOf(Integer.valueOf(params[2]) + 100);
-                    object.put("id", id_setTemp);
-                    object.put("value", value_setTemp);
+                case Constants.CHECK_CURRENT_DATABASE:
+                    String id_check_device_from_db = params[1];
+                    object.put("id", id_check_device_from_db);
                     break;
+
                 default:
                     return null;
             }

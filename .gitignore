@@ -24,3 +24,4 @@ gen/
 #NDK
 obj/
 .externalNativeBuild
+.idea
