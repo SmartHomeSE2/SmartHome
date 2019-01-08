@@ -25,9 +25,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public DashboardAdapter(List<Device> devices) {
         this.devices = devices;
-        for (int i = 0; i < devices.size(); i++) {
-            Log.i(TAG, String.valueOf(i) + devices.get(i).getName());
-        }
     }
 
     // Inflate XML Layouts and return ViewHolders
@@ -58,10 +55,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder deviceViewHolder, int position) {
         Device device = devices.get(position);
 
-        // Control devices
+        // Toggleable devices
         if (deviceViewHolder instanceof ViewHolderControl) {
             ViewHolderControl holder = (ViewHolderControl) deviceViewHolder;
+
             holder.title.setText(device.getName());
+
             if (device.getName().equals(Constants.FAN)) {
                 holder.image.setImageResource(R.drawable.ic_fan);
             }
@@ -72,14 +71,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 holder.status.setText("isOn");
             }
             holder.control.setChecked(device.getValue().equals("1"));
-
         }
 
-        // Display devices
+        // Checkable devices
         if (deviceViewHolder instanceof ViewHolderDisplay) {
             ViewHolderDisplay holder = (ViewHolderDisplay) deviceViewHolder;
             String deviceValue = device.getValue();
             String deviceName = device.getName();
+
             holder.title.setText(deviceName);
             switch (deviceName) {
                 case Constants.FIRE_ALARM:
@@ -138,7 +137,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     /////////////////////////////////// Custom ViewHolders /////////////////////////////////////////
-// ViewHolder for Lights
+    // ViewHolder for toggleable devices
     class ViewHolderControl extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
         public ImageView image;
         public TextView title, status;
@@ -193,7 +192,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    // ViewHolder for Burglary Alarm
+    // ViewHolder for Burglar Alarm
     class ViewHolderBurgle extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
         public TextView title, status;
         public Switch enableBurgleAlarm;

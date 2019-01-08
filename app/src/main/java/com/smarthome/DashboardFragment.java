@@ -118,12 +118,11 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
     public void onSwitchToggle(final boolean isChecked, final int position) {
 
         // turn on/off indoor light
-        // turn on/off outdoor light
         // turn on/off fan
         // enable/disable burglar alarm
         final Device toggledDevice = devices.get(position);
 
-        // turn on/off indoor light, outdoor light, fan
+        // turn on/off indoor light and fan
         NetService request = new NetService(new NetService.NetResponseListener() {
             @Override
             public void onFinishNetRequest(NetResponse netResponse) {
@@ -132,10 +131,10 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
                     Log.i("xixi", "response value: " + response);
 
                     toggledDevice.setValue(response);
-
                     Log.i("xixi", "device value after: " + toggledDevice.getValue());
 
                     adapter.notifyDataSetChanged();
+                    //initialize();
                     // }
                 } else {
                     Toast.makeText(getContext(), "Server error, please try again later", Toast.LENGTH_SHORT).show();
@@ -160,6 +159,7 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
                         Log.i("xixi", "Burglar enable after: " + devices.get(position).getIsEnable());
 
                         adapter.notifyDataSetChanged();
+                        //initialize();
                     }
 
                 } else {
@@ -188,6 +188,7 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
 
                     checkedDevice.setValue(netResponse.getResponse());
                     adapter.notifyDataSetChanged();
+                    //initialize();
                 } else {
                     Toast.makeText(getContext(), "Server error, please try again later", Toast.LENGTH_SHORT).show();
                 }
