@@ -119,7 +119,7 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
 
 
     @Override
-    public void onSwitchToggle(final View view, final boolean isChecked, final int position) {
+    public void onSwitchToggle(final boolean isChecked, final int position) {
 
         // turn on/off indoor light
         // turn on/off outdoor light
@@ -133,9 +133,18 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
             public void onFinishNetRequest(NetResponse netResponse) {
                 if (netResponse != null) {
                     String response = netResponse.getResponse();
-                    toggledDevice.setValue(response);
+                    Log.i("xixi", "response value: " + response);
+                    if (toggledDevice.getValue().equals(response)) {
+                        if (response.equals("0")) {
+                            toggledDevice.setValue("1");
+                        } else if (response.equals("1")) {
+                            toggledDevice.setValue("0");
+                        }
+                        // toggledDevice.setValue(response.equals("0") ? "1" : response);
+                        Log.i("xixi", "device value after: " + toggledDevice.getValue());
 
-                    updateDashboard(devices);
+                        adapter.notifyDataSetChanged();
+                    }
                 } else {
                     Toast.makeText(getContext(), "Server error, please try again later", Toast.LENGTH_SHORT).show();
                 }
@@ -148,9 +157,19 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
             public void onFinishNetRequest(NetResponse netResponse) {
                 if (netResponse != null) {
                     String response = netResponse.getResponse();
-                    toggledDevice.setTarget(response);
+                    Log.i("xixi", "response enable: " + response);
 
-                    updateDashboard(devices);
+                    if (toggledDevice.getTarget().equals(response)) {
+                        if (response.equals("0")) {
+                            toggledDevice.setTarget("1");
+                        } else if (response.equals("1")) {
+                            toggledDevice.setTarget("0");
+                        }
+                        Log.i("xixi", "Burglar enable after: " + devices.get(position).getTarget());
+
+                        adapter.notifyDataSetChanged();
+                    }
+
                 } else {
                     Toast.makeText(getContext(), "Server error, please try again later", Toast.LENGTH_SHORT).show();
                 }
@@ -158,24 +177,14 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
         });
 
         if (toggledDevice.getName().equals(Constants.BURGLAR_ALARM)) {
-            boolean isEnable = devices.get(position).getTarget().equals("1");
-            if ((isChecked && !isEnable) || (!isChecked && isEnable)) {
-                Log.i(TAG, "isChecked: " + isChecked);
-                Log.i(TAG, "isEnable: " + isEnable);
-                enableBurglarAlarm.execute(Constants.TOGGLE_DEVICE, String.valueOf(111));
-            }
+            enableBurglarAlarm.execute(Constants.TOGGLE_DEVICE, String.valueOf(111));
         } else {
-            boolean isOn = devices.get(position).getValue().equals("1");
-            if ((isChecked && !isOn) || (!isChecked && isOn)) {
-                Log.i(TAG, "isChecked: " + isChecked);
-                Log.i(TAG, "isOn: " + isOn);
-                request.execute(Constants.TOGGLE_DEVICE, String.valueOf(toggledDevice.getId()));
-            }
+            request.execute(Constants.TOGGLE_DEVICE, String.valueOf(toggledDevice.getId()));
         }
     }
 
     @Override
-    public void onItemSelected(final String targetTemp, int position) {
+    public void onItemSelected(final String targetTemp, final int position) {
         // Only getting temp set response
         // setTemp target indoor/attic
         final Device device = devices.get(position);
@@ -183,15 +192,15 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
             @Override
             public void onFinishNetRequest(NetResponse netResponse) {
                 if (netResponse != null) {
-                    Log.i(TAG, "response: " + netResponse.getResponse());
+                    Log.i("haha", "target temp response: " + netResponse.getResponse());
                     if (netResponse.getResponse().equals("temp set")) {
                         device.setTarget(targetTemp);
+                        Log.i("haha", "target temp after: " + devices.get(position).getTarget());
+                        adapter.notifyDataSetChanged();
                     }
                 } else {
                     Toast.makeText(getContext(), "Server error, please try again later", Toast.LENGTH_SHORT).show();
                 }
-
-                adapter.notifyDataSetChanged();
             }
         });
 
@@ -204,7 +213,7 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
 
             id = 110;
         }
-        request.execute(Constants.SET_TEMP, String.valueOf(id), String.valueOf(targetTemp + 100));
+        request.execute(Constants.SET_TEMP, String.valueOf(id), String.valueOf(targetTemp));
     }
 
     ///////////////////////////////////// Common Methods ///////////////////////////////////////////

@@ -74,11 +74,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             if (device.getValue().equals("0")) {
                 holder.status.setText("isOff");
-                holder.control.setChecked(false);
             } else if (device.getValue().equals("1")) {
                 holder.status.setText("isOn");
-                holder.control.setChecked(true);
             }
+            holder.control.setChecked(device.getValue().equals("1"));
+
         }
         // Temperature
         if (deviceViewHolder instanceof ViewHolderTempIn) {
@@ -89,7 +89,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             holder.actualTempIn.setText(temp);
             String target = device.getTarget();
             if (!target.trim().isEmpty()) {
-                holder.targetTempIn.setSelection(Integer.parseInt(target));
+                holder.targetTempIn.setSelection(Integer.parseInt(target), false);
             }
         }
 
@@ -167,15 +167,22 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         @Override
         public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-            if (mItemClickListener != null) {
-                mItemClickListener.onSwitchToggle(compoundButton, isChecked, getAdapterPosition());
-                Log.i(TAG, devices.get(getAdapterPosition()).getName() + " toggled: " + isChecked);
+            int position = getAdapterPosition();
+            boolean isOn = devices.get(position).getValue().equals("1");
+            if ((isChecked && !isOn) || (!isChecked && isOn)) {
+
+                if (mItemClickListener != null) {
+                    mItemClickListener.onSwitchToggle(isChecked, position);
+                    Log.i("xixi", devices.get(position).getName() + " toggled: " + isChecked);
+                    Log.i("xixi", "device target: " + devices.get(position).getTarget());
+
+                }
             }
         }
     }
 
     // ViewHolder for Indoor Temperatures
-    class ViewHolderTempIn extends RecyclerView.ViewHolder {
+    class ViewHolderTempIn extends RecyclerView.ViewHolder implements AdapterView.OnItemSelectedListener {
         public TextView title, actualTempIn;
         public Spinner targetTempIn;
 
@@ -184,28 +191,36 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             title = itemView.findViewById(R.id.title_temp_in);
             actualTempIn = itemView.findViewById(R.id.actual_temp_in);
             targetTempIn = itemView.findViewById(R.id.spinner_targetTemp);
+
             ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(mContext, R.array.spinner_data, android.R.layout.simple_spinner_dropdown_item);
             spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             targetTempIn.setAdapter(spinnerAdapter);
 
-            targetTempIn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            targetTempIn.setOnItemSelectedListener(this);
+        }
 
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    int position = getAdapterPosition();
-                    if (position == 3 || position == 4) {
-                        Log.i("haha", "position " + position);
-                        if (mItemClickListener != null) {
-                            mItemClickListener.onItemSelected(adapterView.getItemAtPosition(i).toString(), position);
-                        }
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            int position = getAdapterPosition();
+
+            if (position == 3 || position == 4) {
+                Device device = getClickedItem(position);
+                String deviceTarget = device.getTarget();
+                String newTarget = adapterView.getItemAtPosition(i).toString();
+                if (!deviceTarget.equals(newTarget)) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemSelected(adapterView.getItemAtPosition(i).toString(), position);
+                        Log.i("haha", "temp position " + position);
+                        Log.i("haha", "device target temp: " + devices.get(position).getTarget());
                     }
                 }
 
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        }
 
-                }
-            });
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+
         }
     }
 
@@ -239,18 +254,27 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
 
         @Override
-        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-            if (mItemClickListener != null) {
-                mItemClickListener.onSwitchToggle(compoundButton, b, getAdapterPosition());
+        public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
+            int position = getAdapterPosition();
+            boolean isEnable = devices.get(position).getTarget().equals("1");
+            if ((isCheck && !isEnable) || (!isCheck && isEnable)) {
+
+                if (mItemClickListener != null) {
+                    Log.i("xixi", "Burglar enable: " + devices.get(position).getTarget());
+                    mItemClickListener.onSwitchToggle(isCheck, getAdapterPosition());
+                }
             }
+
         }
     }
 
+
     // Click listener
     public interface OnItemClickListener {
-        void onSwitchToggle(View view, boolean isChecked, int position);
+        void onSwitchToggle(boolean isChecked, int position);
 
         void onItemSelected(String targetTemp, int position);
+
     }
 
     public void SetOnItemClickListener(final OnItemClickListener mItemClickListener) {
@@ -260,4 +284,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public Device getClickedItem(int position) {
         return devices.get(position);
     }
+
+
 }
