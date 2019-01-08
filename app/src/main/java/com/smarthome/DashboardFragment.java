@@ -214,6 +214,21 @@ public class DashboardFragment extends Fragment implements DashboardAdapter.OnIt
             id = 110;
         }
         request.execute(Constants.SET_TEMP, String.valueOf(id), String.valueOf(targetTemp));
+
+        // check targetTemp
+        /*
+        NetService checkTargetTemp = new NetService(new NetService.NetResponseListener() {
+            @Override
+            public void onFinishNetRequest(NetResponse netResponse) {
+                if (netResponse != null) {
+                    Log.i("haha", "check target temp response: " + netResponse.getResponse());
+                } else {
+                    Toast.makeText(getContext(), "Server error, please try again later", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        checkTargetTemp.execute(Constants.CHECK_DEVICE, String.valueOf(id));*/
     }
 
     ///////////////////////////////////// Common Methods ///////////////////////////////////////////
